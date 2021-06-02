@@ -1,0 +1,16 @@
+name = "ImageClipboard"
+uuid = "6db54171-f50f-4661-a74f-bc514ef16cee"
+authors = ["hyrodium <hyrodium@gmail.com> and contributors"]
+version = "0.0.1"
+
+[deps]
+Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
