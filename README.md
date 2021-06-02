@@ -29,6 +29,6 @@ img == img2
 ```
 
 ## Sample screenshots (old)
-![](docs/src/clipboard_img.gif)
+![](docs/src/img/clipboard_img.gif)
 
-![](docs/src/clipboard_img2.gif)
+![](docs/src/img/clipboard_img2.gif)
