@@ -2,6 +2,8 @@ module ImageClipboard
 
 using Images
 
+export clipboard_img
+
 # linux
 include("_xclip.jl")
 # # mac
@@ -25,8 +27,13 @@ end
 """
 Copy an image to clipboard
 """
-function clipboard_img(::Matrix{<:Colorant})
-    # TODO
+function clipboard_img(img::Matrix{<:Colorant})
+    if Sys.islinux()
+        xclip_copy(img)
+    else
+        error("Currently, only linux is supported")
+    end
+    nothing
 end
 
 end # module
