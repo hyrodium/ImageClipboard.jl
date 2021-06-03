@@ -17,9 +17,10 @@ jobs:
           - ubuntu-latest
         arch:
           - x64
+        include:
+          - os: ubuntu-latest
+            prefix: xvfb-run
     steps:
-      - run: sudo apt-get install xclip xorg openbox
-      - run: export DISPLAY=:0.0
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
         with:
@@ -37,6 +38,8 @@ jobs:
             ${{ runner.os }}-
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
+        with:
+          prefix: ${{ matrix.prefix }}
   docs:
     name: Documentation
     runs-on: ubuntu-latest
