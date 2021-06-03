@@ -28,7 +28,9 @@ img2 = clipboard_img()
 img == img2
 ```
 
-## Sample screenshots (old)
-![](docs/src/img/clipboard_img.gif)
+## Sample screenshots
+### Paste an image
+![](docs/src/img/screenshot_paste.gif)
 
-![](docs/src/img/clipboard_img2.gif)
+### Copy an image
+![](docs/src/img/screenshot_copy.gif)
