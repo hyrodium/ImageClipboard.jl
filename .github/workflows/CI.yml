@@ -14,13 +14,16 @@ jobs:
           - 'nightly'
         os:
           - ubuntu-latest
+          - windows-latest
         arch:
           - x64
         include:
           - os: ubuntu-latest
             prefix: xvfb-run
     steps:
-      - run: sudo apt-get install xclip
+      - name: Install xclip if Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get install xclip
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
         with:
