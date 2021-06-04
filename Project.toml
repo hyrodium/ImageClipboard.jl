@@ -16,4 +16,4 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
 
 [targets]
-test = ["Test"]
+test = ["Test", "Images"]
