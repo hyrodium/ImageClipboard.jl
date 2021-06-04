@@ -1,6 +1,6 @@
 module ImageClipboard
 
-using Images
+using ImageIO, FileIO
 
 export clipboard_img
 
