@@ -10,6 +10,9 @@ ImageIO = "82e4d734-157c-48bb-816b-45c225c6df19"
 
 [compat]
 julia = "1"
+ColorTypes = "0.10, 0.11"
+FileIO = "1"
+ImageIO = "0.5"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
