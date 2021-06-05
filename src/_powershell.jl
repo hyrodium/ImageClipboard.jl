@@ -1,7 +1,7 @@
 """
-Get an image from clipboard using powershell
+Paste an image from clipboard using powershell
 """
-function _powershell_paste()
+function _powershell()
     mktempdir() do dir
         # Define path
         path_png = joinpath(dir, "clipboard.png")
@@ -27,7 +27,7 @@ end
 """
 Copy an image to clipboard using powershell
 """
-function _powershell_copy(img::Matrix{<:Colorant})
+function _powershell(img::Matrix{<:Colorant})
     mktempdir() do dir
         # Define path
         path_png = joinpath(dir, "clipboard.png")
