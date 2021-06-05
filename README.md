@@ -29,8 +29,8 @@ img == img2
 ```
 
 ## Sample screenshots
-### Paste an image
-![](docs/src/img/screenshot_paste.gif)
-
 ### Copy an image
 ![](docs/src/img/screenshot_copy.gif)
+
+### Paste an image
+![](docs/src/img/screenshot_paste.gif)

@@ -15,6 +15,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "Function Reference" => "functionreference.md",
     ],
 )
 
