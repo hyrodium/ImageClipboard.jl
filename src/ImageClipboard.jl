@@ -23,7 +23,7 @@ function clipboard_img()
     elseif Sys.iswindows()
         img = _powershell()
     else
-        error("Currently, only linux is supported")
+        error("Currently, only linux and windows are supported")
     end
     return img
 end
@@ -39,7 +39,7 @@ function clipboard_img(img::Matrix{<:Colorant})
     elseif Sys.iswindows()
         _powershell(img)
     else
-        error("Currently, only linux is supported")
+        error("Currently, only linux and windows are supported")
     end
     nothing
 end
