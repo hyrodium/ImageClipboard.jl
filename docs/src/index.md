@@ -11,7 +11,8 @@ Copy & Paste images with Julia
 (@v1.6) pkg> add https://github.com/hyrodium/ImageClipboard.jl
 ```
 
-## Usage
+## Basic usage
+
 ```julia
 using Images, ImageClipboard
 
@@ -28,18 +29,19 @@ img2 = clipboard_img()
 img == img2
 ```
 
-## Sample screenshots
-### Paste an image
-![](img/screenshot_paste.gif)
+## Public methods
 
+```@docs
+clipboard_img()
+```
+
+```@docs
+clipboard_img(::Matrix{<:Colorant})
+```
+
+## Sample screenshots
 ### Copy an image
 ![](img/screenshot_copy.gif)
 
-## docstrings
-
-```@index
-```
-
-```@autodocs
-Modules = [ImageClipboard]
-```
+### Paste an image
+![](img/screenshot_paste.gif)

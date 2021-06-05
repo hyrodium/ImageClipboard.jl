@@ -13,29 +13,33 @@ include("_powershell.jl")
 
 
 """
-Get an image from clipboard
+    clipboard_img() -> Matrix{<:Colorant}
+
+Paste an image from clipboard
 """
 function clipboard_img()
     if Sys.islinux()
-        img = xclip_paste()
+        img = _xclip()
     elseif Sys.iswindows()
-        img = _powershell_paste()
+        img = _powershell()
     else
-        error("Currently, only linux is supported")
+        error("Currently, only linux and windows are supported")
     end
     return img
 end
 
 """
+    clipboard_img(img::Matrix{<:Colorant})
+
 Copy an image to clipboard
 """
 function clipboard_img(img::Matrix{<:Colorant})
     if Sys.islinux()
-        xclip_copy(img)
+        _xclip(img)
     elseif Sys.iswindows()
-        img = _powershell_copy(img)
+        _powershell(img)
     else
-        error("Currently, only linux is supported")
+        error("Currently, only linux and windows are supported")
     end
     nothing
 end
