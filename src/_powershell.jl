@@ -8,8 +8,8 @@ function _powershell()
 
         # Compose command & run
         addtype = `Add-Type -AssemblyName System.Windows.Forms\;`
-        getimg = `\$clipboardImage=\[Windows.Forms.Clipboard\]::GetImage\(\)\;`
-        saveimg = `if \(\$clipboardImage -ne \$null\)\{\$clipboardImage.Save\(\"$(path_png)\"\)\}`
+        getimg = `\$img=\[Windows.Forms.Clipboard\]::GetImage\(\)\;`
+        saveimg = `if \(\$img -ne \$null\)\{\$img.Save\(\"$(path_png)\"\)\}`
         cmd = `powershell $addtype $getimg $saveimg`
         run(cmd)
 
