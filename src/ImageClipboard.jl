@@ -20,7 +20,7 @@ Paste an image from clipboard
 """
 function clipboard_img()
     if Sys.islinux()
-        if ENV["XDG_SESSION_TYPE"] == "wayland"
+        if get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
             img = _wlclipboard()
         else
             img = _xclip()
@@ -40,7 +40,7 @@ Copy an image to clipboard
 """
 function clipboard_img(img::Matrix{<:Colorant})
     if Sys.islinux()
-        if ENV["XDG_SESSION_TYPE"] == "wayland"
+        if get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
             _wlclipboard(img)
         else
             _xclip(img)
