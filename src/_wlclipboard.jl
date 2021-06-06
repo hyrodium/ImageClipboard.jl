@@ -13,7 +13,7 @@ function _wlclipboard()
     img_buf = IOBuffer()
 
     # Pipe clipboard image to buffer
-    if success(pipeline(`wl-paste`; stdout=img_buf))
+    if success(pipeline(`wl-paste -t image/png`; stdout=img_buf))
         # Load image from buffer
         img = load(img_buf)
         return img
@@ -33,7 +33,7 @@ function _wlclipboard(img::Matrix{<:Colorant})
     save(Stream{format"PNG"}(img_buf), img)
 
     # Copy to clipboard
-    open(`wl-copy`, "w", stdout) do f
+    open(`wl-copy -t image/png`, "w", stdout) do f
         print(f, String(take!(img_buf)))
     end
 end
