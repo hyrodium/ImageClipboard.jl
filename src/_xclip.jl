@@ -4,41 +4,35 @@ function _isavailable_xclip()
     end
 end
 
-
 """
 Paste an image from clipboard using xclip
 """
 function _xclip()
     _isavailable_xclip()
-    mktempdir() do dir
-        # Define path
-        path_png = joinpath(dir, "clipboard.png")
+    img_buf = IOBuffer()
 
-        # Save clipboard image
-        if success(pipeline(`xclip -selection clipboard -t image/png -o`, stdout=path_png))
-            # Load image
-            img = load(path_png)
-            return img
-        else
-            error("No image in clipboard")
-        end
+    # Pipe clipboard image to buffer
+    if success(pipeline(`xclip -selection clipboard -t image/png -o`; stdout=img_buf))
+        # Load image from buffer
+        img = load(img_buf)
+        return img
+    else
+        error("No image in clipboard")
     end
 end
-
 
 """
 Copy an image to clipboard using xclip
 """
 function _xclip(img::Matrix{<:Colorant})
     _isavailable_xclip()
-    mktempdir() do dir
-        # Define path
-        path_png = joinpath(dir, "clipboard.png")
+    img_buf = IOBuffer()
 
-        # Save given image
-        save(path_png, img)
+    # Save given image to buffer
+    save(Stream{format"PNG"}(img_buf), img)
 
-        # Copy to clipboard
-        run(pipeline(`xclip -selection clipboard -t image/png -i $(path_png)`))
+    # Copy to clipboard
+    open(`xclip -selection clipboard -t image/png`, "w", stdout) do f
+        print(f, String(take!(img_buf)))
     end
 end
