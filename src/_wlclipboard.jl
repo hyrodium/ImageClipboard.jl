@@ -3,6 +3,8 @@ function _isavailable_wlclipboard()
 end
 
 """
+    clipboard_img() -> Matrix{<:Colorant}
+
 Paste an image from clipboard using wl-paste
 """
 function _wlclipboard()
@@ -19,6 +21,8 @@ function _wlclipboard()
 end
 
 """
+    clipboard_img(img::Matrix{<:Colorant})
+
 Copy an image to clipboard using wl-copy
 """
 function _wlclipboard(img::Matrix{<:Colorant})

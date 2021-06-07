@@ -29,16 +29,6 @@ img2 = clipboard_img()
 img == img2
 ```
 
-## Public methods
-
-```@docs
-clipboard_img()
-```
-
-```@docs
-clipboard_img(::Matrix{<:Colorant})
-```
-
 ## Sample screenshots
 ### Copy an image
 ![](img/screenshot_copy.gif)
