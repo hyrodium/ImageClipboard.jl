@@ -8,9 +8,9 @@ export clipboard_img
 include("_xclip.jl")
 # linux-wayland
 include("_wlclipboard.jl")
-# # mac
+# mac
 # include("_osascript.jl")
-# # windows
+# windows
 include("_powershell.jl")
 
 """
@@ -19,11 +19,19 @@ include("_powershell.jl")
 Paste an image from clipboard
 """
 function clipboard_img()
-    if Sys.islinux()
-        if get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
+    if Sys.islinux() && get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
+        if _isavailable_wlclipboard()
             img = _wlclipboard()
-        else
+        elseif _isavailable_xclip()
             img = _xclip()
+        else
+            error("Please install wlclipboard or xclip to your system")
+        end
+    elseif Sys.islinux()
+        if _isavailable_xclip()
+            img = _xclip()
+        else
+            error("Please install xclip to your system")
         end
     elseif Sys.iswindows()
         img = _powershell()
@@ -39,11 +47,19 @@ end
 Copy an image to clipboard
 """
 function clipboard_img(img::Matrix{<:Colorant})
-    if Sys.islinux()
-        if get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
+    if Sys.islinux() && get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
+        if _isavailable_wlclipboard()
             _wlclipboard(img)
-        else
+        elseif _isavailable_xclip()
             _xclip(img)
+        else
+            error("Please install wlclipboard or xclip to your system")
+        end
+    elseif Sys.islinux()
+        if _isavailable_xclip()
+            _xclip(img)
+        else
+            error("Please install xclip to your system")
         end
     elseif Sys.iswindows()
         _powershell(img)
