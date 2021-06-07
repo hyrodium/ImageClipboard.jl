@@ -1,5 +1,5 @@
 """
-    clipboard_img() -> Matrix{<:Colorant}
+    _powershell() -> Matrix{<:Colorant}
 
 Paste an image from clipboard using powershell
 """
@@ -25,9 +25,8 @@ function _powershell()
     end
 end
 
-
 """
-    clipboard_img(img::Matrix{<:Colorant})
+    _powershell(img::Matrix{<:Colorant})
 
 Copy an image to clipboard using powershell
 """
