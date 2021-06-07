@@ -6,7 +6,6 @@ end
 Paste an image from clipboard using xclip
 """
 function _xclip()
-    _isavailable_xclip() || error("Please install xclip to your system")
     img_buf = IOBuffer()
 
     # Pipe clipboard image to buffer
@@ -23,7 +22,6 @@ end
 Copy an image to clipboard using xclip
 """
 function _xclip(img::Matrix{<:Colorant})
-    _isavailable_xclip() || error("Please install xclip to your system")
     img_buf = IOBuffer()
 
     # Save given image to buffer

@@ -6,7 +6,6 @@ end
 Paste an image from clipboard using wl-paste
 """
 function _wlclipboard()
-    _isavailable_wlclipboard() || error("Please install wl-clipboard to your system")
     img_buf = IOBuffer()
 
     # Pipe clipboard image to buffer
@@ -23,7 +22,6 @@ end
 Copy an image to clipboard using wl-copy
 """
 function _wlclipboard(img::Matrix{<:Colorant})
-    _isavailable_wlclipboard() || error("Please install wl-clipboard to your system")
     img_buf = IOBuffer()
 
     # Save given image to buffer
