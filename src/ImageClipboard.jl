@@ -4,13 +4,14 @@ using ImageIO, FileIO, ColorTypes
 
 export clipboard_img
 
-# linux
+# linux-X11
 include("_xclip.jl")
+# linux-wayland
+include("_wlclipboard.jl")
 # # mac
 # include("_osascript.jl")
 # # windows
 include("_powershell.jl")
-
 
 """
     clipboard_img() -> Matrix{<:Colorant}
@@ -19,7 +20,11 @@ Paste an image from clipboard
 """
 function clipboard_img()
     if Sys.islinux()
-        img = _xclip()
+        if get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
+            img = _wlclipboard()
+        else
+            img = _xclip()
+        end
     elseif Sys.iswindows()
         img = _powershell()
     else
@@ -35,13 +40,17 @@ Copy an image to clipboard
 """
 function clipboard_img(img::Matrix{<:Colorant})
     if Sys.islinux()
-        _xclip(img)
+        if get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
+            _wlclipboard(img)
+        else
+            _xclip(img)
+        end
     elseif Sys.iswindows()
         _powershell(img)
     else
         error("Currently, only linux and windows are supported")
     end
-    nothing
+    return nothing
 end
 
 end # module
