@@ -8,9 +8,9 @@ export clipboard_img
 include("_xclip.jl")
 # linux-wayland
 include("_wlclipboard.jl")
-# # mac
+# mac
 # include("_osascript.jl")
-# # windows
+# windows
 include("_powershell.jl")
 
 """
@@ -20,7 +20,7 @@ Paste an image from clipboard
 """
 function clipboard_img()
     if Sys.islinux()
-        if get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
+        if get(ENV, "XDG_SESSION_TYPE", "") == "wayland" && _isavailable_wlclipboard()
             img = _wlclipboard()
         else
             img = _xclip()
@@ -40,7 +40,7 @@ Copy an image to clipboard
 """
 function clipboard_img(img::Matrix{<:Colorant})
     if Sys.islinux()
-        if get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
+        if get(ENV, "XDG_SESSION_TYPE", "") == "wayland" && _isavailable_wlclipboard()
             _wlclipboard(img)
         else
             _xclip(img)
