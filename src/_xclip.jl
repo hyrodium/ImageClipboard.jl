@@ -3,6 +3,8 @@ function _isavailable_xclip()
 end
 
 """
+    clipboard_img() -> Matrix{<:Colorant}
+
 Paste an image from clipboard using xclip
 """
 function _xclip()
@@ -19,6 +21,8 @@ function _xclip()
 end
 
 """
+    clipboard_img(img::Matrix{<:Colorant})
+
 Copy an image to clipboard using xclip
 """
 function _xclip(img::Matrix{<:Colorant})
