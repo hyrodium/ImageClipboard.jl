@@ -1,7 +1,7 @@
 """
     _powershell() -> Matrix{<:Colorant}
 
-Paste an image from clipboard using powershell
+Paste an image from clipboard using `powershell`
 """
 function _powershell()
     mktempdir() do dir
@@ -28,7 +28,7 @@ end
 """
     _powershell(img::Matrix{<:Colorant})
 
-Copy an image to clipboard using powershell
+Copy an image to clipboard using `powershell`
 """
 function _powershell(img::Matrix{<:Colorant})
     mktempdir() do dir

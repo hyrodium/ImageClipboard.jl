@@ -5,7 +5,7 @@ end
 """
     _xclip() -> Matrix{<:Colorant}
 
-Paste an image from clipboard using xclip
+Paste an image from clipboard using `xclip`
 """
 function _xclip()
     img_buf = IOBuffer()
@@ -23,7 +23,7 @@ end
 """
     _xclip(img::Matrix{<:Colorant})
 
-Copy an image to clipboard using xclip
+Copy an image to clipboard using `xclip`
 """
 function _xclip(img::Matrix{<:Colorant})
     img_buf = IOBuffer()

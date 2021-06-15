@@ -1,7 +1,7 @@
 """
     _osascript() -> Matrix{<:Colorant}
 
-Paste an image from clipboard using osascript
+Paste an image from clipboard using `osascript`
 """
 function _osascript()
     mktempdir() do dir
@@ -25,7 +25,7 @@ end
 """
     _osascript(img::Matrix{<:Colorant})
 
-Copy an image to clipboard using osascript
+Copy an image to clipboard using `osascript`
 """
 function _osascript(img::Matrix{<:Colorant})
     mktempdir() do dir
