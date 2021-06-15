@@ -9,7 +9,7 @@ include("_xclip.jl")
 # linux-wayland
 include("_wlclipboard.jl")
 # mac
-# include("_osascript.jl")
+include("_osascript.jl")
 # windows
 include("_powershell.jl")
 
@@ -35,6 +35,8 @@ function clipboard_img()
         end
     elseif Sys.iswindows()
         img = _powershell()
+    elseif Sys.isapple()
+        img = _osascript()
     else
         error("Currently, only linux and windows are supported")
     end
@@ -63,6 +65,8 @@ function clipboard_img(img::Matrix{<:Colorant})
         end
     elseif Sys.iswindows()
         _powershell(img)
+    elseif Sys.isapple()
+        _osascript(img)
     else
         error("Currently, only linux and windows are supported")
     end
