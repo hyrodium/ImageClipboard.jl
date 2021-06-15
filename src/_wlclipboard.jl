@@ -5,7 +5,7 @@ end
 """
     _wlclipboard() -> Matrix{<:Colorant}
 
-Paste an image from clipboard using wl-paste
+Paste an image from clipboard using `wl-paste`
 """
 function _wlclipboard()
     img_buf = IOBuffer()
@@ -23,7 +23,7 @@ end
 """
     _wlclipboard(img::Matrix{<:Colorant})
 
-Copy an image to clipboard using wl-copy
+Copy an image to clipboard using `wl-copy`
 """
 function _wlclipboard(img::Matrix{<:Colorant})
     img_buf = IOBuffer()
