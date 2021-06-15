@@ -9,7 +9,7 @@ function _osascript()
         path_png = joinpath(dir, "clipboard.png")
 
         # Compose command & run
-        cmd = Cmd(["osascript", "-e", "write (the clipboard as «class PNGf») to (open for access \"$(path_png)\" with write permission)"])
+        cmd = Cmd(["osascript", "-e", "try\nwrite (the clipboard as «class PNGf») to (open for access \"$(path_png)\" with write permission)\nend try"])
         run(cmd)
 
         # Paste from clipboard
