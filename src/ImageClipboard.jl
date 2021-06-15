@@ -38,7 +38,7 @@ function clipboard_img()
     elseif Sys.isapple()
         img = _osascript()
     else
-        error("Currently, only linux and windows are supported")
+        error("Only Linux, Windows, and Mac are supported")
     end
     return img
 end
@@ -68,7 +68,7 @@ function clipboard_img(img::Matrix{<:Colorant})
     elseif Sys.isapple()
         _osascript(img)
     else
-        error("Currently, only linux and windows are supported")
+        error("Only Linux, Windows, and Mac are supported")
     end
     return nothing
 end
