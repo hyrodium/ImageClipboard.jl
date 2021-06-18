@@ -1,5 +1,5 @@
 """
-    _powershell() -> Matrix{<:Colorant}
+    _powershell() -> AbstractMatrix{<:Colorant}
 
 Paste an image from clipboard using `powershell`
 """
@@ -26,11 +26,11 @@ function _powershell()
 end
 
 """
-    _powershell(img::Matrix{<:Colorant})
+    _powershell(img::AbstractMatrix{<:Colorant})
 
 Copy an image to clipboard using `powershell`
 """
-function _powershell(img::Matrix{<:Colorant})
+function _powershell(img::AbstractMatrix{<:Colorant})
     mktempdir() do dir
         # Define path
         path_png = joinpath(dir, "clipboard.png")

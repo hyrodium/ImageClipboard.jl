@@ -3,7 +3,7 @@ function _isavailable_xclip()
 end
 
 """
-    _xclip() -> Matrix{<:Colorant}
+    _xclip() -> AbstractMatrix{<:Colorant}
 
 Paste an image from clipboard using `xclip`
 """
@@ -21,11 +21,11 @@ function _xclip()
 end
 
 """
-    _xclip(img::Matrix{<:Colorant})
+    _xclip(img::AbstractMatrix{<:Colorant})
 
 Copy an image to clipboard using `xclip`
 """
-function _xclip(img::Matrix{<:Colorant})
+function _xclip(img::AbstractMatrix{<:Colorant})
     img_buf = IOBuffer()
 
     # Save given image to buffer

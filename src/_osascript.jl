@@ -1,5 +1,5 @@
 """
-    _osascript() -> Matrix{<:Colorant}
+    _osascript() -> AbstractMatrix{<:Colorant}
 
 Paste an image from clipboard using `osascript`
 """
@@ -23,11 +23,11 @@ function _osascript()
 end
 
 """
-    _osascript(img::Matrix{<:Colorant})
+    _osascript(img::AbstractMatrix{<:Colorant})
 
 Copy an image to clipboard using `osascript`
 """
-function _osascript(img::Matrix{<:Colorant})
+function _osascript(img::AbstractMatrix{<:Colorant})
     mktempdir() do dir
         # Define path
         path_png = joinpath(dir, "clipboard.png")
