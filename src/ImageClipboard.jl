@@ -14,7 +14,7 @@ include("_osascript.jl")
 include("_powershell.jl")
 
 """
-    clipboard_img() -> Matrix{<:Colorant}
+    clipboard_img() -> AbstractMatrix{<:Colorant}
 
 Paste an image from clipboard
 """
@@ -44,11 +44,11 @@ function clipboard_img()
 end
 
 """
-    clipboard_img(img::Matrix{<:Colorant})
+    clipboard_img(img::AbstractMatrix{<:Colorant})
 
 Copy an image to clipboard
 """
-function clipboard_img(img::Matrix{<:Colorant})
+function clipboard_img(img::AbstractMatrix{<:Colorant})
     if Sys.islinux() && get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
         if _isavailable_wlclipboard()
             _wlclipboard(img)

@@ -3,7 +3,7 @@ function _isavailable_wlclipboard()
 end
 
 """
-    _wlclipboard() -> Matrix{<:Colorant}
+    _wlclipboard() -> AbstractMatrix{<:Colorant}
 
 Paste an image from clipboard using `wl-paste`
 """
@@ -21,11 +21,11 @@ function _wlclipboard()
 end
 
 """
-    _wlclipboard(img::Matrix{<:Colorant})
+    _wlclipboard(img::AbstractMatrix{<:Colorant})
 
 Copy an image to clipboard using `wl-copy`
 """
-function _wlclipboard(img::Matrix{<:Colorant})
+function _wlclipboard(img::AbstractMatrix{<:Colorant})
     img_buf = IOBuffer()
 
     # Save given image to buffer

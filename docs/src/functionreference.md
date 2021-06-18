@@ -15,7 +15,7 @@ clipboard_img()
 ```
 
 ```@docs
-clipboard_img(::Matrix{<:Colorant})
+clipboard_img(::AbstractMatrix{<:Colorant})
 ```
 
 ## Private methods
