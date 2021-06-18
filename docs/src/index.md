@@ -8,7 +8,7 @@ Copy & Paste images with Julia
 
 ## Install
 ```
-(@v1.6) pkg> add https://github.com/hyrodium/ImageClipboard.jl
+pkg> add ImageClipboard
 ```
 
 ## Basic usage
