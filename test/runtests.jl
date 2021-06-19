@@ -1,6 +1,7 @@
 using ImageClipboard
 using Images
 using Test
+using InteractiveUtils
 
 @testset "ImageClipboard.jl" begin
 
@@ -9,7 +10,7 @@ using Test
         clipboard_img(img)
         img2 = clipboard_img()
 
-        # FIXME, windows..
+        # FIXME, windows exception (#10)
         if Sys.iswindows()
             @test RGBA.(img) == img2
         else
@@ -22,10 +23,15 @@ using Test
         clipboard_img(img)
         img2 = clipboard_img()
 
-        # FIXME, windows..
+        # FIXME, windows exception (#10)
         if !Sys.iswindows()
             @test img == img2
         end
+    end
+
+    @testset "Error if no image" begin
+        clipboard("")
+        @test_throws ErrorException("No image in clipboard") clipboard_img()
     end
 
 end

@@ -12,9 +12,13 @@ function _xclip()
 
     # Pipe clipboard image to buffer
     if success(pipeline(`xclip -selection clipboard -t image/png -o`; stdout=img_buf))
-        # Load image from buffer
-        img = load(img_buf)
-        return img
+        try
+            # Load image from buffer
+            img = load(img_buf)
+            return img
+        catch
+            error("No image in clipboard")
+        end
     else
         error("No image in clipboard")
     end
