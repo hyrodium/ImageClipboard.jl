@@ -17,6 +17,7 @@ ImageIO = "0.5"
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
+InteractiveUtils = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
 [targets]
-test = ["Test", "Images"]
+test = ["Test", "Images", "InteractiveUtils"]
