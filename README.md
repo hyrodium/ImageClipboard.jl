@@ -12,6 +12,9 @@ pkg> add ImageClipboard
 ```
 
 ## Usage
+
+Just like `clipboard` in InteractiveUtils deals with string contents, this package provides `clipboard_img` to work with image contents:
+
 ```julia
 using Images, ImageClipboard
 
