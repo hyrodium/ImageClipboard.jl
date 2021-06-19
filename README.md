@@ -12,23 +12,22 @@ pkg> add ImageClipboard
 ```
 
 ## Usage
-
 Just like `clipboard` in InteractiveUtils deals with string contents, this package provides `clipboard_img` to work with image contents:
 
 ```julia
 using Images, ImageClipboard
 
-# Create random image
+# Create a random image
 img = rand(RGB{N0f8}, 100, 200)
 
-# Copy to clipboard
+# Copy the image to the clipboard
 clipboard_img(img)
 
-# Paste image from clipboard
+# Paste the image from the clipboard
 img2 = clipboard_img()
 
 # These are the same images
-img == img2
+img == img2  # true
 ```
 
 ## Sample screenshots
@@ -40,7 +39,7 @@ img == img2
 
 
 ### Julia Compatibility
+For Julia versions older than `v"1.3"`, you need to manually install the image IO backend [ImageMagick.jl](https://github.com/JuliaIO/ImageMagick.jl) first.
 
-For Julia versions older than v"1.3", you need to manually install the image IO backend [ImageMagcik.jl] first.
-
-[ImageMagick.jl]: https://github.com/JuliaIO/ImageMagick.jl
+### Other related packages
+* [ClipData.jl](https://github.com/pdeffebach/ClipData.jl) enables users to copy/paste to/from Excel, Google Sheets, and other tabular data sources into interactive Julia sessions.
