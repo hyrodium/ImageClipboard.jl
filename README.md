@@ -37,3 +37,10 @@ img == img2
 
 ### Paste an image
 ![](docs/src/img/screenshot_paste.gif)
+
+
+### Julia Compatibility
+
+For Julia versions older than v"1.3", you need to manually install the image IO backend [ImageMagcik.jl] first.
+
+[ImageMagick.jl]: https://github.com/JuliaIO/ImageMagick.jl
