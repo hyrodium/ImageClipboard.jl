@@ -19,7 +19,7 @@ include("_powershell.jl")
 Paste an image from clipboard
 """
 function clipboard_img()
-    if Sys.islinux() && get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
+    @static if Sys.islinux() && get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
         if _isavailable_wlclipboard()
             img = _wlclipboard()
         elseif _isavailable_xclip()
@@ -49,7 +49,7 @@ end
 Copy an image to clipboard
 """
 function clipboard_img(img::AbstractMatrix{<:Colorant})
-    if Sys.islinux() && get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
+    @static if Sys.islinux() && get(ENV, "XDG_SESSION_TYPE", "") == "wayland"
         if _isavailable_wlclipboard()
             _wlclipboard(img)
         elseif _isavailable_xclip()
