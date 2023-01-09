@@ -2,6 +2,9 @@ using ImageClipboard
 using Images
 using Test
 using InteractiveUtils
+using Aqua
+
+Aqua.test_all(ImageClipboard)
 
 @testset "ImageClipboard.jl" begin
 
