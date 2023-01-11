@@ -3,6 +3,7 @@
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://hyrodium.github.io/ImageClipboard.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://hyrodium.github.io/ImageClipboard.jl/dev)
 [![Build Status](https://github.com/hyrodium/ImageClipboard.jl/workflows/CI/badge.svg)](https://github.com/hyrodium/ImageClipboard.jl/actions)
+[![Coverage](https://codecov.io/gh/hyrodium/ImageClipboard.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/hyrodium/ImageClipboard.jl)
 
 Copy & Paste images with Julia
 
