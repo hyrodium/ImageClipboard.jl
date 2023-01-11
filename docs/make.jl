@@ -12,6 +12,7 @@ makedocs(;
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://hyrodium.github.io/ImageClipboard.jl",
         assets=["assets/favicon.ico"],
+        edit_link="main",
     ),
     pages=[
         "Home" => "index.md",
@@ -21,4 +22,5 @@ makedocs(;
 
 deploydocs(;
     repo="github.com/hyrodium/ImageClipboard.jl",
+    devbranch="main",
 )
