@@ -12,7 +12,7 @@ function _powershell()
         addtype = `Add-Type -AssemblyName System.Windows.Forms\;`
         getimg = `\$img=\[Windows.Forms.Clipboard\]::GetImage\(\)\;`
         saveimg = `if \(\$img -ne \$null\)\{\$img.Save\(\"$(path_png)\"\)\}`
-        cmd = `powershell $addtype $getimg $saveimg`
+        cmd = `powershell -NoProfile $addtype $getimg $saveimg`
         run(cmd)
 
         # Paste from clipboard
