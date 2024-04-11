@@ -33,18 +33,18 @@ Copy an image to clipboard using `powershell`
 function _powershell(img::AbstractMatrix{<:Colorant})
     mktempdir() do dir
         # Define path
-        path_png = joinpath(dir, "clipboard.png")
+        filename = "clipboard.png"
 
         # Save image
-        save(path_png, img)
+        save(joinpath(dir, filename), img)
 
         # Compose command & run
         addtype = `Add-Type -AssemblyName System.Windows.Forms\;`
         adddrawing = `\[Reflection.Assembly\]::LoadWithPartialName\(\'System.Drawing\'\)\;`
-        getfile = `\$file = get-item\(\"$(path_png)\"\)\;`
+        getfile = `\$file = get-item\(\"$(filename)\"\)\;`
         getimg = `\$img = \[System.Drawing.Image\]::Fromfile\(\$file\)\;`
         copyimg = `\[System.Windows.Forms.Clipboard\]::SetImage\(\$img\)\;`
-        cmd = `powershell.exe -NoProfile $addtype $adddrawing $getfile $getimg $copyimg`
+        cmd = Cmd(`powershell.exe -NoProfile $addtype $adddrawing $getfile $getimg $copyimg`; dir)
         run(cmd)
     end
 end
