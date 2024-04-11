@@ -12,7 +12,7 @@ function _powershell()
         addtype = `Add-Type -AssemblyName System.Windows.Forms\;`
         getimg = `\$img=\[Windows.Forms.Clipboard\]::GetImage\(\)\;`
         saveimg = `if \(\$img -ne \$null\)\{\$img.Save\(\"$(path_png)\"\)\}`
-        cmd = `powershell -NoProfile $addtype $getimg $saveimg`
+        cmd = `powershell.exe -NoProfile $addtype $getimg $saveimg`
         run(cmd)
 
         # Paste from clipboard
@@ -44,7 +44,7 @@ function _powershell(img::AbstractMatrix{<:Colorant})
         getfile = `\$file = get-item\(\"$(path_png)\"\)\;`
         getimg = `\$img = \[System.Drawing.Image\]::Fromfile\(\$file\)\;`
         copyimg = `\[System.Windows.Forms.Clipboard\]::SetImage\(\$img\)\;`
-        cmd = `powershell -NoProfile $addtype $adddrawing $getfile $getimg $copyimg`
+        cmd = `powershell.exe -NoProfile $addtype $adddrawing $getfile $getimg $copyimg`
         run(cmd)
     end
 end
