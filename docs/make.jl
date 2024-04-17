@@ -13,6 +13,7 @@ makedocs(;
         canonical="https://hyrodium.github.io/ImageClipboard.jl",
         assets=["assets/favicon.ico"],
         edit_link="main",
+        repolink="https://github.com/hyrodium/ImageClipboard.jl"
     ),
     pages=[
         "Home" => "index.md",
