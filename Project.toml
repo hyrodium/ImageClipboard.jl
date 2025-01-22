@@ -10,7 +10,7 @@ ImageIO = "82e4d734-157c-48bb-816b-45c225c6df19"
 
 [compat]
 Aqua = "0.8"
-ColorTypes = "0.10, 0.11"
+ColorTypes = "0.10, 0.11, 0.12"
 FileIO = "1"
 ImageIO = "0.5, 0.6"
 Images = "0.26"
