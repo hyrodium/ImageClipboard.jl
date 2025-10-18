@@ -1,18 +1,34 @@
 """
     _powershell() -> AbstractMatrix{<:Colorant}
 
-Paste an image from clipboard using `powershell`
+Paste an image from clipboard using `powershell` (supports RGBA)
 """
 function _powershell()
     mktempdir() do dir
         # Define path
         path_png = joinpath(dir, "clipboard.png")
 
-        # Compose command & run
-        addtype = `Add-Type -AssemblyName System.Windows.Forms\;`
-        getimg = `\$img=\[Windows.Forms.Clipboard\]::GetImage\(\)\;`
-        saveimg = `if \(\$img -ne \$null\)\{\$img.Save\(\"$(path_png)\"\)\}`
-        cmd = `powershell.exe -NoProfile $addtype $getimg $saveimg`
+        # Compose command & run (try to get PNG format first for RGBA support)
+        script = """
+        Add-Type -AssemblyName System.Windows.Forms;
+        \$png = [System.Windows.Forms.Clipboard]::GetData("PNG");
+        if (\$png -ne \$null) {
+            # PNG format available (preserves transparency)
+            \$ms = \$png;
+            \$fs = [System.IO.File]::OpenWrite("$(path_png)");
+            \$ms.CopyTo(\$fs);
+            \$fs.Close();
+            \$ms.Close();
+        } else {
+            # Fallback to standard image format
+            \$img = [Windows.Forms.Clipboard]::GetImage();
+            if (\$img -ne \$null) {
+                \$img.Save("$(path_png)", [System.Drawing.Imaging.ImageFormat]::Png);
+                \$img.Dispose();
+            }
+        }
+        """
+        cmd = `powershell.exe -NoProfile -Command $script`
         run(cmd)
 
         # Paste from clipboard
@@ -28,23 +44,49 @@ end
 """
     _powershell(img::AbstractMatrix{<:Colorant})
 
-Copy an image to clipboard using `powershell`
+Copy an image to clipboard using `powershell` (supports RGBA)
 """
 function _powershell(img::AbstractMatrix{<:Colorant})
     mktempdir() do dir
         # Define path
         filename = "clipboard.png"
+        filepath = joinpath(dir, filename)
 
-        # Save image
-        save(joinpath(dir, filename), img)
+        # Save image as PNG
+        save(filepath, img)
 
         # Compose command & run
-        addtype = `Add-Type -AssemblyName System.Windows.Forms\;`
-        adddrawing = `\[Reflection.Assembly\]::LoadWithPartialName\(\'System.Drawing\'\)\;`
-        getfile = `\$file = get-item\(\"$(filename)\"\)\;`
-        getimg = `\$img = \[System.Drawing.Image\]::Fromfile\(\$file\)\;`
-        copyimg = `\[System.Windows.Forms.Clipboard\]::SetImage\(\$img\)\;`
-        cmd = Cmd(`powershell.exe -NoProfile $addtype $adddrawing $getfile $getimg $copyimg`; dir)
+        script = """
+        Add-Type -AssemblyName System.Windows.Forms;
+        Add-Type -AssemblyName System.Drawing;
+
+        # Load image
+        \$img = [System.Drawing.Image]::FromFile("$(filepath)");
+
+        # Create MemoryStream with PNG data (preserves transparency)
+        \$ms = New-Object System.IO.MemoryStream;
+        \$img.Save(\$ms, [System.Drawing.Imaging.ImageFormat]::Png);
+        \$ms.Position = 0;
+
+        # Create DataObject and set both formats
+        \$dataObject = New-Object System.Windows.Forms.DataObject;
+
+        # Set PNG format (for modern apps with RGBA support)
+        \$dataObject.SetData("PNG", \$false, \$ms);
+
+        # Set standard image format (for compatibility with legacy apps)
+        \$img2 = [System.Drawing.Image]::FromFile("$(filepath)");
+        \$dataObject.SetImage(\$img2);
+
+        # Copy to clipboard with persistence
+        [System.Windows.Forms.Clipboard]::SetDataObject(\$dataObject, \$true);
+
+        # Cleanup
+        \$img.Dispose();
+        \$img2.Dispose();
+        \$ms.Close();
+        """
+        cmd = `powershell.exe -NoProfile -Command $script`
         run(cmd)
     end
 end
