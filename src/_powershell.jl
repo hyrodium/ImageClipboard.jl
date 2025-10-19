@@ -5,8 +5,9 @@ Paste an image from clipboard using `powershell`
 """
 function _powershell()
     mktempdir() do dir
-        # Define path
-        path_png = joinpath(dir, "clipboard.png")
+        # Define paths
+        filename = "clipboard.png"
+        path_png = joinpath(dir, filename)
 
         # Compose command & run (try to get PNG format first for RGBA support)
         script = """
@@ -15,7 +16,7 @@ function _powershell()
         if (\$png -ne \$null) {
             # PNG format available (preserves transparency)
             \$ms = \$png;
-            \$fs = [System.IO.File]::OpenWrite("$(path_png)");
+            \$fs = [System.IO.File]::OpenWrite("$filename");
             \$ms.CopyTo(\$fs);
             \$fs.Close();
             \$ms.Close();
@@ -23,12 +24,14 @@ function _powershell()
             # Fallback to standard image format
             \$img = [Windows.Forms.Clipboard]::GetImage();
             if (\$img -ne \$null) {
-                \$img.Save("$(path_png)", [System.Drawing.Imaging.ImageFormat]::Png);
+                \$img.Save("$filename", [System.Drawing.Imaging.ImageFormat]::Png);
                 \$img.Dispose();
             }
         }
         """
-        cmd = `powershell.exe -NoProfile -Command $script`
+
+        # Use `dir` kwarg for WSL support
+        cmd = Cmd(`powershell.exe -NoProfile -Command $script`; dir)
         run(cmd)
 
         # Paste from clipboard
@@ -48,8 +51,11 @@ Copy an image to clipboard using `powershell`
 """
 function _powershell(img::AbstractMatrix{<:Colorant})
     mktempdir() do dir
-        # Define path
-        path_png = joinpath(dir, "clipboard.png")
+        # Define paths
+        filename = "clipboard.png"
+        path_png = joinpath(dir, filename)
+
+        # Save temporary PNG file
         save(path_png, img)
 
         # Use a more complex script that handles RGBA properly
@@ -58,10 +64,10 @@ function _powershell(img::AbstractMatrix{<:Colorant})
         Add-Type -AssemblyName System.Drawing;
 
         # Load image
-        \$bmp = New-Object System.Drawing.Bitmap("$(path_png)");
+        \$bmp = New-Object System.Drawing.Bitmap("$filename");
 
         # Read PNG bytes
-        \$pngBytes = [System.IO.File]::ReadAllBytes("$(path_png)");
+        \$pngBytes = [System.IO.File]::ReadAllBytes("$filename");
         \$pngStream = New-Object System.IO.MemoryStream(,\$pngBytes);
 
         # Create DataObject
@@ -91,7 +97,9 @@ function _powershell(img::AbstractMatrix{<:Colorant})
         \$pngStream.Close();
         \$bmp.Dispose();
         """
-        cmd = `powershell.exe -NoProfile -Command $script`
+
+        # Use `dir` kwarg for WSL support
+        cmd = Cmd(`powershell.exe -NoProfile -Command $script`; dir)
         run(cmd)
     end
 end
