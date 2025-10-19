@@ -8,7 +8,7 @@ CurrentModule = ImageClipboard
 ```@index
 ```
 
-## Public methods
+## Exported methods
 
 ```@docs
 clipboard_img()

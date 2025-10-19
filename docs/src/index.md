@@ -15,27 +15,19 @@ pkg> add ImageClipboard
 Just like `clipboard` in InteractiveUtils deals with string contents, this package provides `clipboard_img` to work with image contents:
 
 ```julia
-using Images, ImageClipboard
+using ImageClipboard  # Exports `clipboard_img`
+using Images, TestImages
 
-# Create a random image
-img = rand(RGB{N0f8}, 100, 200)
+testimage("mandrill")
 
-# Copy the image to the clipboard
-clipboard_img(img)
+# Paste image with ImageClipboard.jl🎉🎉🎉
+clipboard_img()
 
-# Paste the image from the clipboard
-img2 = clipboard_img()
-
-# These are the same images
-img == img2  # true
+# Copy image with ImageClipboard.jl🎉🎉🎉
+clipboard_img(Gray.(testimage("mandrill")))
 ```
 
-## Sample screenshots
-### Copy an image
-![](img/screenshot_copy.gif)
-
-### Paste an image
-![](img/screenshot_paste.gif)
+![](demo.mp4)
 
 ### Julia Compatibility
 For Julia versions older than `v"1.3"`, you need to manually install the image IO backend [ImageMagick.jl](https://github.com/JuliaIO/ImageMagick.jl) first.
