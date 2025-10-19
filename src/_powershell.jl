@@ -49,9 +49,8 @@ Copy an image to clipboard using `powershell`
 function _powershell(img::AbstractMatrix{<:Colorant})
     mktempdir() do dir
         # Define path
-        filename = "clipboard.png"
-        filepath = joinpath(dir, filename)
-        save(filepath, img)
+        path_png = joinpath(dir, "clipboard.png")
+        save(path_png, img)
 
         # Use a more complex script that handles RGBA properly
         script = """
@@ -59,10 +58,10 @@ function _powershell(img::AbstractMatrix{<:Colorant})
         Add-Type -AssemblyName System.Drawing;
 
         # Load image
-        \$bmp = New-Object System.Drawing.Bitmap("$(filepath)");
+        \$bmp = New-Object System.Drawing.Bitmap("$(path_png)");
 
         # Read PNG bytes
-        \$pngBytes = [System.IO.File]::ReadAllBytes("$(filepath)");
+        \$pngBytes = [System.IO.File]::ReadAllBytes("$(path_png)");
         \$pngStream = New-Object System.IO.MemoryStream(,\$pngBytes);
 
         # Create DataObject
