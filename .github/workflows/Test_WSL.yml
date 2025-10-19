@@ -21,7 +21,7 @@ jobs:
         uses: Vampire/setup-wsl@v6
         with:
           distribution: Ubuntu-22.04
-          additional-packages: curl xclip
+          additional-packages: curl xclip xvfb dbus-x11
       - name: Install Julia via juliaup
         shell: wsl-bash {0}
         run: |
@@ -39,6 +39,9 @@ jobs:
         shell: wsl-bash {0}
         run: |
           export PATH="$HOME/.juliaup/bin:$PATH"
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          sleep 2
           julia --project=. -e 'using Pkg; Pkg.test(coverage=true)'
       - name: Process coverage
         shell: wsl-bash {0}
