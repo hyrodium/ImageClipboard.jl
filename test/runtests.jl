@@ -13,12 +13,7 @@ Aqua.test_all(ImageClipboard)
         clipboard_img(img)
         img2 = clipboard_img()
 
-        # FIXME, windows exception (#10)
-        if Sys.iswindows()
-            @test RGBA.(img) == img2
-        else
-            @test img == img2
-        end
+        @test img == img2
     end
 
     @testset "RGBA image copy & paste" begin
