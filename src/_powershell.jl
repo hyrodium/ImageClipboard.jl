@@ -48,6 +48,7 @@ Copy an image to clipboard using `powershell`
 """
 function _powershell(img::AbstractMatrix{<:Colorant})
     mktempdir() do dir
+        # Define path
         filename = "clipboard.png"
         filepath = joinpath(dir, filename)
         save(filepath, img)
