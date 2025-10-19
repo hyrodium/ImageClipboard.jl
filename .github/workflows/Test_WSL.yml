@@ -21,28 +21,29 @@ jobs:
         uses: Vampire/setup-wsl@v6
         with:
           distribution: Ubuntu-22.04
-          additional-packages: wget curl tar gzip ca-certificates
+          additional-packages: curl
       - name: Install Julia via juliaup
         shell: wsl-bash {0}
         run: |
           curl -fsSL https://install.julialang.org | sh -s -- --yes
-          source ~/.bashrc
+          export PATH="$HOME/.juliaup/bin:$PATH"
           juliaup add ${{ matrix.version }}
           juliaup default ${{ matrix.version }}
           julia --version
       - name: Build package
         shell: wsl-bash {0}
         run: |
-          source ~/.bashrc
+          export PATH="$HOME/.juliaup/bin:$PATH"
           julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.build()'
       - name: Run tests
         shell: wsl-bash {0}
         run: |
+          export PATH="$HOME/.juliaup/bin:$PATH"
           julia --project=. -e 'using Pkg; Pkg.test(coverage=true)'
       - name: Process coverage
         shell: wsl-bash {0}
         run: |
-          source ~/.bashrc
+          export PATH="$HOME/.juliaup/bin:$PATH"
           julia --project=. -e 'using Pkg; Pkg.add("Coverage"); using Coverage; LCOV.writefile("lcov.info", Codecov.process_folder())'
       - uses: codecov/codecov-action@v5
         with:
