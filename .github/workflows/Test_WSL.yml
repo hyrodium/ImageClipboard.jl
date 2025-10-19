@@ -21,7 +21,7 @@ jobs:
         uses: Vampire/setup-wsl@v6
         with:
           distribution: Ubuntu-22.04
-          additional-packages: curl
+          additional-packages: curl xclip
       - name: Install Julia via juliaup
         shell: wsl-bash {0}
         run: |
