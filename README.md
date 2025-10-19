@@ -26,7 +26,7 @@ img = clipboard_img()
 clipboard_img(Gray.(img))
 ```
 
-https://github.com/user-attachments/assets/8407d4e8-31a4-4108-8ecb-e8481a4f9179
+https://github.com/user-attachments/assets/8ccbfea8-3dd4-49e4-80b2-062d102c66e9
 
 ## Julia Compatibility
 For Julia versions older than `v"1.3"`, you need to manually install the image IO backend [ImageMagick.jl](https://github.com/JuliaIO/ImageMagick.jl) first.
