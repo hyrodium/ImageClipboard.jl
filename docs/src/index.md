@@ -16,15 +16,14 @@ Just like `InteractiveUtils.clipboard` deals with string contents, this package 
 
 ```julia
 using ImageClipboard  # Exports `clipboard_img`
-using Images, TestImages
-
-testimage("mandrill")
+using ImageClipboard  # Exports `clipboard_img`
+using Images
 
 # Paste image with ImageClipboard.jl🎉🎉🎉
-clipboard_img()
+img = clipboard_img()
 
 # Copy image with ImageClipboard.jl🎉🎉🎉
-clipboard_img(Gray.(testimage("mandrill")))
+clipboard_img(Gray.(img))
 ```
 
 ![](demo.mp4)
