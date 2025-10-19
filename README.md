@@ -31,7 +31,7 @@ img2 = clipboard_img()
 img == img2  # true
 ```
 
-https://github.com/user-attachments/assets/0daf9e19-42ad-447f-9600-2350627200de
+https://github.com/user-attachments/assets/8407d4e8-31a4-4108-8ecb-e8481a4f9179
 
 ### Julia Compatibility
 For Julia versions older than `v"1.3"`, you need to manually install the image IO backend [ImageMagick.jl](https://github.com/JuliaIO/ImageMagick.jl) first.
