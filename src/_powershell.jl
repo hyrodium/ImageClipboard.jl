@@ -44,49 +44,53 @@ end
 """
     _powershell(img::AbstractMatrix{<:Colorant})
 
-Copy an image to clipboard using `powershell` (supports RGBA)
+Copy an image to clipboard using `powershell` (RGBA support via DIBv5)
 """
 function _powershell(img::AbstractMatrix{<:Colorant})
     mktempdir() do dir
-        # Define path
         filename = "clipboard.png"
         filepath = joinpath(dir, filename)
-
-        # Save image as PNG
         save(filepath, img)
 
-        # Compose command & run
+        # Use a more complex script that handles RGBA properly
         script = """
         Add-Type -AssemblyName System.Windows.Forms;
         Add-Type -AssemblyName System.Drawing;
-
+        
         # Load image
-        \$img = [System.Drawing.Image]::FromFile("$(filepath)");
-
-        # Create MemoryStream with PNG data (preserves transparency)
-        \$ms = New-Object System.IO.MemoryStream;
-        \$img.Save(\$ms, [System.Drawing.Imaging.ImageFormat]::Png);
-        \$ms.Position = 0;
-
-        # Create DataObject and set both formats
+        \$bmp = New-Object System.Drawing.Bitmap("$(filepath)");
+        
+        # Read PNG bytes
+        \$pngBytes = [System.IO.File]::ReadAllBytes("$(filepath)");
+        \$pngStream = New-Object System.IO.MemoryStream(,\$pngBytes);
+        
+        # Create DataObject
         \$dataObject = New-Object System.Windows.Forms.DataObject;
-
-        # Set PNG format (for modern apps with RGBA support)
-        \$dataObject.SetData("PNG", \$false, \$ms);
-
-        # Set standard image format (for compatibility with legacy apps)
-        \$img2 = [System.Drawing.Image]::FromFile("$(filepath)");
-        \$dataObject.SetImage(\$img2);
-
-        # Copy to clipboard with persistence
+        
+        # Set PNG
+        \$dataObject.SetData("PNG", \$false, \$pngStream);
+        
+        # Set bitmap with alpha (convert to Format32bppArgb if needed)
+        if (\$bmp.PixelFormat -ne [System.Drawing.Imaging.PixelFormat]::Format32bppArgb) {
+            \$bmpArgb = New-Object System.Drawing.Bitmap(\$bmp.Width, \$bmp.Height, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb);
+            \$graphics = [System.Drawing.Graphics]::FromImage(\$bmpArgb);
+            \$graphics.DrawImage(\$bmp, 0, 0);
+            \$graphics.Dispose();
+            \$bmp.Dispose();
+            \$bmp = \$bmpArgb;
+        }
+        
+        \$dataObject.SetImage(\$bmp);
+        
+        # Clear and set
+        [System.Windows.Forms.Clipboard]::Clear();
         [System.Windows.Forms.Clipboard]::SetDataObject(\$dataObject, \$true);
-
-        # Cleanup
-        \$img.Dispose();
-        \$img2.Dispose();
-        \$ms.Close();
+        
+        Start-Sleep -Milliseconds 100;
+        
+        \$pngStream.Close();
+        \$bmp.Dispose();
         """
-        cmd = `powershell.exe -NoProfile -Command $script`
-        run(cmd)
+        run(`powershell.exe -NoProfile -Command $script`)
     end
 end
