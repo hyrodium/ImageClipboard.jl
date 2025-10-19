@@ -26,21 +26,23 @@ jobs:
         shell: wsl-bash {0}
         run: |
           curl -fsSL https://install.julialang.org | sh -s -- --yes
-          export PATH="$HOME/.juliaup/bin:$PATH"
+          source ~/.bashrc
           juliaup add ${{ matrix.version }}
           juliaup default ${{ matrix.version }}
           julia --version
-          # PATHを全ステップで有効にする
-          echo "PATH=$HOME/.juliaup/bin:$PATH" >> $GITHUB_ENV
       - name: Build package
         shell: wsl-bash {0}
-        run: julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.build()'
+        run: |
+          source ~/.bashrc
+          julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.build()'
       - name: Run tests
         shell: wsl-bash {0}
-        run: julia --project=. -e 'using Pkg; Pkg.test(coverage=true)'
+        run: |
+          julia --project=. -e 'using Pkg; Pkg.test(coverage=true)'
       - name: Process coverage
         shell: wsl-bash {0}
         run: |
+          source ~/.bashrc
           julia --project=. -e 'using Pkg; Pkg.add("Coverage"); using Coverage; LCOV.writefile("lcov.info", Codecov.process_folder())'
       - uses: codecov/codecov-action@v5
         with:
