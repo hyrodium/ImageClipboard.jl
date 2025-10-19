@@ -31,13 +31,7 @@ img2 = clipboard_img()
 img == img2  # true
 ```
 
-## Sample screenshots
-### Copy an image
-![](docs/src/img/screenshot_copy.gif)
-
-### Paste an image
-![](docs/src/img/screenshot_paste.gif)
-
+https://github.com/user-attachments/assets/0daf9e19-42ad-447f-9600-2350627200de
 
 ### Julia Compatibility
 For Julia versions older than `v"1.3"`, you need to manually install the image IO backend [ImageMagick.jl](https://github.com/JuliaIO/ImageMagick.jl) first.
