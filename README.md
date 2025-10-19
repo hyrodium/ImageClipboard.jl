@@ -30,8 +30,15 @@ clipboard_img(Gray.(testimage("mandrill")))
 
 https://github.com/user-attachments/assets/8407d4e8-31a4-4108-8ecb-e8481a4f9179
 
-### Julia Compatibility
+## Julia Compatibility
 For Julia versions older than `v"1.3"`, you need to manually install the image IO backend [ImageMagick.jl](https://github.com/JuliaIO/ImageMagick.jl) first.
 
-### Other related packages
+## Other related packages
 * [ClipData.jl](https://github.com/pdeffebach/ClipData.jl) enables users to copy/paste to/from Excel, Google Sheets, and other tabular data sources into interactive Julia sessions.
+
+## Note on Naming
+
+- **Package**: `ImageClipboard.jl` — follows Julia image package conventions (like [ImageFiltering.jl](https://github.com/JuliaImages/ImageFiltering.jl))
+- **Function**: `clipboard_img()` — extends `InteractiveUtils.clipboard()`
+
+The reversed word order is intentional to maintain consistency with existing Julia ecosystem patterns.
