@@ -21,10 +21,7 @@ Aqua.test_all(ImageClipboard)
         clipboard_img(img)
         img2 = clipboard_img()
 
-        # FIXME, windows exception (#10)
-        if !Sys.iswindows()
-            @test img == img2
-        end
+        @test img == img2
     end
 
     @testset "Error if no image" begin
