@@ -15,7 +15,6 @@ jobs:
         version:
           - '1'
           - 'lts'
-          - 'nightly'
     steps:
       - uses: actions/checkout@v5
       - name: Setup WSL
@@ -23,30 +22,22 @@ jobs:
         with:
           distribution: Ubuntu-22.04
           additional-packages: wget curl tar gzip ca-certificates
-      - name: Install Julia in WSL
+      - name: Install Julia via juliaup
         shell: wsl-bash {0}
         run: |
-          JULIA_VERSION="${{ matrix.version }}"
-          if [ "$JULIA_VERSION" = "nightly" ]; then
-            wget https://julialangnightlies-s3.julialang.org/bin/linux/x64/julia-latest-linux-x86_64.tar.gz
-            tar -xzf julia-latest-linux-x86_64.tar.gz
-            JULIA_DIR=$(ls -d julia-* | head -1)
-          else
-            wget "https://julialang-s3.julialang.org/bin/linux/x64/${JULIA_VERSION}/julia-${JULIA_VERSION}-latest-linux-x86_64.tar.gz"
-            tar -xzf "julia-${JULIA_VERSION}-latest-linux-x86_64.tar.gz"
-            JULIA_DIR=$(ls -d julia-* | head -1)
-          fi
-          sudo mv "$JULIA_DIR" /opt/julia
-          sudo ln -s /opt/julia/bin/julia /usr/local/bin/julia
+          curl -fsSL https://install.julialang.org | sh -s -- --yes
+          export PATH="$HOME/.juliaup/bin:$PATH"
+          juliaup add ${{ matrix.version }}
+          juliaup default ${{ matrix.version }}
           julia --version
+          # PATHを全ステップで有効にする
+          echo "PATH=$HOME/.juliaup/bin:$PATH" >> $GITHUB_ENV
       - name: Build package
         shell: wsl-bash {0}
-        run: |
-          julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.build()'
+        run: julia --project=. -e 'using Pkg; Pkg.instantiate(); Pkg.build()'
       - name: Run tests
         shell: wsl-bash {0}
-        run: |
-          julia --project=. -e 'using Pkg; Pkg.test(coverage=true)'
+        run: julia --project=. -e 'using Pkg; Pkg.test(coverage=true)'
       - name: Process coverage
         shell: wsl-bash {0}
         run: |
