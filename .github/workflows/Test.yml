@@ -1,4 +1,4 @@
-name: CI
+name: Test
 on:
   push:
     branches:
@@ -14,6 +14,7 @@ jobs:
       matrix:
         version:
           - '1'
+          - 'lts'
           - 'nightly'
         os:
           - ubuntu-latest
