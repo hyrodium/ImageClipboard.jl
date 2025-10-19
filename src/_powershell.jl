@@ -1,7 +1,7 @@
 """
     _powershell() -> AbstractMatrix{<:Colorant}
 
-Paste an image from clipboard using `powershell` (supports RGBA)
+Paste an image from clipboard using `powershell`
 """
 function _powershell()
     mktempdir() do dir
@@ -44,7 +44,7 @@ end
 """
     _powershell(img::AbstractMatrix{<:Colorant})
 
-Copy an image to clipboard using `powershell` (RGBA support via DIBv5)
+Copy an image to clipboard using `powershell`
 """
 function _powershell(img::AbstractMatrix{<:Colorant})
     mktempdir() do dir
@@ -56,20 +56,20 @@ function _powershell(img::AbstractMatrix{<:Colorant})
         script = """
         Add-Type -AssemblyName System.Windows.Forms;
         Add-Type -AssemblyName System.Drawing;
-        
+
         # Load image
         \$bmp = New-Object System.Drawing.Bitmap("$(filepath)");
-        
+
         # Read PNG bytes
         \$pngBytes = [System.IO.File]::ReadAllBytes("$(filepath)");
         \$pngStream = New-Object System.IO.MemoryStream(,\$pngBytes);
-        
+
         # Create DataObject
         \$dataObject = New-Object System.Windows.Forms.DataObject;
-        
+
         # Set PNG
         \$dataObject.SetData("PNG", \$false, \$pngStream);
-        
+
         # Set bitmap with alpha (convert to Format32bppArgb if needed)
         if (\$bmp.PixelFormat -ne [System.Drawing.Imaging.PixelFormat]::Format32bppArgb) {
             \$bmpArgb = New-Object System.Drawing.Bitmap(\$bmp.Width, \$bmp.Height, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb);
@@ -79,18 +79,19 @@ function _powershell(img::AbstractMatrix{<:Colorant})
             \$bmp.Dispose();
             \$bmp = \$bmpArgb;
         }
-        
+
         \$dataObject.SetImage(\$bmp);
-        
+
         # Clear and set
         [System.Windows.Forms.Clipboard]::Clear();
         [System.Windows.Forms.Clipboard]::SetDataObject(\$dataObject, \$true);
-        
+
         Start-Sleep -Milliseconds 100;
-        
+
         \$pngStream.Close();
         \$bmp.Dispose();
         """
-        run(`powershell.exe -NoProfile -Command $script`)
+        cmd = `powershell.exe -NoProfile -Command $script`
+        run(cmd)
     end
 end
