@@ -5,14 +5,33 @@ Paste an image from clipboard using `powershell`
 """
 function _powershell()
     mktempdir() do dir
-        # Define path
-        path_png = joinpath(dir, "clipboard.png")
+        # Define paths
+        filename = "clipboard.png"
+        path_png = joinpath(dir, filename)
 
-        # Compose command & run
-        addtype = `Add-Type -AssemblyName System.Windows.Forms\;`
-        getimg = `\$img=\[Windows.Forms.Clipboard\]::GetImage\(\)\;`
-        saveimg = `if \(\$img -ne \$null\)\{\$img.Save\(\"$(path_png)\"\)\}`
-        cmd = `powershell.exe -NoProfile $addtype $getimg $saveimg`
+        # Compose command & run (try to get PNG format first for RGBA support)
+        script = """
+        Add-Type -AssemblyName System.Windows.Forms;
+        \$png = [System.Windows.Forms.Clipboard]::GetData("PNG");
+        if (\$png -ne \$null) {
+            # PNG format available (preserves transparency)
+            \$ms = \$png;
+            \$fs = [System.IO.File]::OpenWrite("$filename");
+            \$ms.CopyTo(\$fs);
+            \$fs.Close();
+            \$ms.Close();
+        } else {
+            # Fallback to standard image format
+            \$img = [Windows.Forms.Clipboard]::GetImage();
+            if (\$img -ne \$null) {
+                \$img.Save("$filename", [System.Drawing.Imaging.ImageFormat]::Png);
+                \$img.Dispose();
+            }
+        }
+        """
+
+        # Use `dir` kwarg for WSL support
+        cmd = Cmd(`powershell.exe -NoProfile -Command $script`; dir)
         run(cmd)
 
         # Paste from clipboard
@@ -32,19 +51,55 @@ Copy an image to clipboard using `powershell`
 """
 function _powershell(img::AbstractMatrix{<:Colorant})
     mktempdir() do dir
-        # Define path
+        # Define paths
         filename = "clipboard.png"
+        path_png = joinpath(dir, filename)
 
-        # Save image
-        save(joinpath(dir, filename), img)
+        # Save temporary PNG file
+        save(path_png, img)
 
-        # Compose command & run
-        addtype = `Add-Type -AssemblyName System.Windows.Forms\;`
-        adddrawing = `\[Reflection.Assembly\]::LoadWithPartialName\(\'System.Drawing\'\)\;`
-        getfile = `\$file = get-item\(\"$(filename)\"\)\;`
-        getimg = `\$img = \[System.Drawing.Image\]::Fromfile\(\$file\)\;`
-        copyimg = `\[System.Windows.Forms.Clipboard\]::SetImage\(\$img\)\;`
-        cmd = Cmd(`powershell.exe -NoProfile $addtype $adddrawing $getfile $getimg $copyimg`; dir)
+        # Use a more complex script that handles RGBA properly
+        script = """
+        Add-Type -AssemblyName System.Windows.Forms;
+        Add-Type -AssemblyName System.Drawing;
+
+        # Load image
+        \$bmp = New-Object System.Drawing.Bitmap("$filename");
+
+        # Read PNG bytes
+        \$pngBytes = [System.IO.File]::ReadAllBytes("$filename");
+        \$pngStream = New-Object System.IO.MemoryStream(,\$pngBytes);
+
+        # Create DataObject
+        \$dataObject = New-Object System.Windows.Forms.DataObject;
+
+        # Set PNG
+        \$dataObject.SetData("PNG", \$false, \$pngStream);
+
+        # Set bitmap with alpha (convert to Format32bppArgb if needed)
+        if (\$bmp.PixelFormat -ne [System.Drawing.Imaging.PixelFormat]::Format32bppArgb) {
+            \$bmpArgb = New-Object System.Drawing.Bitmap(\$bmp.Width, \$bmp.Height, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb);
+            \$graphics = [System.Drawing.Graphics]::FromImage(\$bmpArgb);
+            \$graphics.DrawImage(\$bmp, 0, 0);
+            \$graphics.Dispose();
+            \$bmp.Dispose();
+            \$bmp = \$bmpArgb;
+        }
+
+        \$dataObject.SetImage(\$bmp);
+
+        # Clear and set
+        [System.Windows.Forms.Clipboard]::Clear();
+        [System.Windows.Forms.Clipboard]::SetDataObject(\$dataObject, \$true);
+
+        Start-Sleep -Milliseconds 100;
+
+        \$pngStream.Close();
+        \$bmp.Dispose();
+        """
+
+        # Use `dir` kwarg for WSL support
+        cmd = Cmd(`powershell.exe -NoProfile -Command $script`; dir)
         run(cmd)
     end
 end
