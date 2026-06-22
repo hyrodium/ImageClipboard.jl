@@ -29,7 +29,7 @@ jobs:
       - name: Install xclip if Linux
         if: runner.os == 'Linux'
         run: sudo apt-get install xclip
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: julia-actions/setup-julia@v3
         with:
           version: ${{ matrix.version }}
